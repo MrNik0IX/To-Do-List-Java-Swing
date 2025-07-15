@@ -8,6 +8,7 @@ import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
 import java.time.LocalDate;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
@@ -143,11 +144,12 @@ Task task = new Task("Test", "My test task", LocalDate.of(2000, 12, 17), (byte) 
 		//JButtons to cancel or send in form
 		JButton cancelButton = new JButton("Cancel");
 		JButton submitButton = new JButton("Submit");
-		JPanel buttonPanel = new JPanel();
+		JPanel buttonPanel = new JPanel(new BorderLayout());
 		buttonPanel.setBackground(Color.LIGHT_GRAY);
 		
-		List.of(cancelButton, submitButton).forEach(a->buttonPanel.add(a));
-		cancelButton.addActionListener(e->createDialog.setVisible(false));
+		buttonPanel.add(cancelButton, BorderLayout.LINE_START);
+		buttonPanel.add(submitButton, BorderLayout.LINE_END);
+		
 		dialogPanel.add(buttonPanel, BorderLayout.PAGE_END);
 		
 		//Adjust background color of all form field panels again
@@ -158,8 +160,17 @@ Task task = new Task("Test", "My test task", LocalDate.of(2000, 12, 17), (byte) 
 		List.of(dateFieldPanel, priorityFieldPanel).forEach(a -> rightSide.add(a));
 		dialogPanel.add(leftSide, BorderLayout.LINE_START);
 		dialogPanel.add(rightSide, BorderLayout.LINE_END);
-	
+		JPanel warningPanel = new JPanel();
+		JLabel warningLabel = new JLabel();
+		warningPanel.add(warningLabel);
+		warningPanel.setBackground(Color.LIGHT_GRAY);
+		buttonPanel.add(warningPanel, BorderLayout.PAGE_END);
+		warningPanel.setVisible(false);
 		
+		cancelButton.addActionListener(e->{
+			createDialog.setVisible(false);
+			warningPanel.setVisible(false);
+			});
 		//-----------------------------------------------------------------------------------------//
 		
 		//Panels
@@ -193,5 +204,37 @@ Task task = new Task("Test", "My test task", LocalDate.of(2000, 12, 17), (byte) 
 			createDialog.setVisible(true);
 		});
 		head.add(createButton);
+	
+		
+		//Submitbutton event listener
+		submitButton.addActionListener(e->{
+			
+			
+			//Check if any fields are empty 
+			if (getTitleField.getText().isEmpty()||getDescField.getText().isEmpty()) {
+			warningLabel.setText("Either the Title or the Description is empty please fill out");
+			warningPanel.setVisible(true);
+			return;
+			}
+			try {
+				if(getDateField.getDate().compareTo(new Date())==-1){
+					warningPanel.setVisible(true);
+					warningLabel.setText("The given Date was before today which makes no sence");
+					return;
+				}
+			} catch(java.lang.NullPointerException e1) {
+				warningPanel.setVisible(true);
+				warningLabel.setText("Please enter a valid date!");
+				return;
+			}
+			
+			warningPanel.setVisible(false);
+			
+			
+			//Get entered data and create Task
+			
+			createDialog.setVisible(false);
+			
+		});
 	}
 }
