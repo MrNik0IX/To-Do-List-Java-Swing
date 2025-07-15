@@ -50,7 +50,7 @@ Task task = new Task("Test", "My test task", LocalDate.of(2000, 12, 17), (byte) 
 		window.setSize(600, 500);
 		
 		
-		//Dialog for task creation
+		//Dialog for task creation (Needs cleanup to be more structured)
 		JDialog createDialog = new JDialog(window, true);
 		
 		createDialog.setResizable(false);
@@ -174,9 +174,11 @@ Task task = new Task("Test", "My test task", LocalDate.of(2000, 12, 17), (byte) 
 		//-----------------------------------------------------------------------------------------//
 		
 		//Panels
-		
+		JPanel mainPanel = new JPanel();
+		mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.Y_AXIS));
 		//Top Panel with title and create button
 		JPanel head = new JPanel();
+		mainPanel.add(head);
 		head.setLayout(new BoxLayout(head, BoxLayout.PAGE_AXIS));
 	
 		window.add(head);
@@ -205,6 +207,7 @@ Task task = new Task("Test", "My test task", LocalDate.of(2000, 12, 17), (byte) 
 		});
 		head.add(createButton);
 	
+		//-----------------------------------------------------------------------------------------//
 		
 		//Submitbutton event listener
 		submitButton.addActionListener(e->{
