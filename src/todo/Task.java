@@ -1,5 +1,10 @@
 package todo;
+import java.awt.FlowLayout;
+import java.sql.Date;
 import java.time.LocalDate;
+
+import javax.swing.JLabel;
+import javax.swing.JPanel;
 
 public class Task {
 
@@ -93,5 +98,14 @@ public class Task {
 		this.isDone = isDone;
 	}
 	
+	public JPanel displayTask() {
+		JPanel taskDisplayPanel = new JPanel(new FlowLayout());
+		taskDisplayPanel.add(new JLabel(Integer.toString(taskId)));
+		taskDisplayPanel.add(new JLabel(taskTitle));
+		taskDisplayPanel.add(new JLabel(taskDescription));
+		taskDisplayPanel.add(new JLabel(taskDueDate.toString()));
+		taskDisplayPanel.add(new JLabel(Integer.toString(taskPriority)));
+		return taskDisplayPanel;
+	}
 	
 }

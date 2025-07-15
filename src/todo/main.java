@@ -3,6 +3,7 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
@@ -171,17 +172,19 @@ Task task = new Task("Test", "My test task", LocalDate.of(2000, 12, 17), (byte) 
 			createDialog.setVisible(false);
 			warningPanel.setVisible(false);
 			});
+		
 		//-----------------------------------------------------------------------------------------//
 		
 		//Panels
 		JPanel mainPanel = new JPanel();
 		mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.Y_AXIS));
+		
 		//Top Panel with title and create button
 		JPanel head = new JPanel();
 		mainPanel.add(head);
 		head.setLayout(new BoxLayout(head, BoxLayout.PAGE_AXIS));
 	
-		window.add(head);
+		window.add(mainPanel);
 		
 		//-----------------------------------------------------------------------------------------//
 		
@@ -231,12 +234,14 @@ Task task = new Task("Test", "My test task", LocalDate.of(2000, 12, 17), (byte) 
 				return;
 			}
 			
-			warningPanel.setVisible(false);
+			
 			
 			
 			//Get entered data and create Task
-			
+			mainPanel.add(new Task("f", "fff", LocalDate.now(), (byte)3).displayTask());
+			warningPanel.setVisible(false);
 			createDialog.setVisible(false);
+			window.revalidate();
 			
 		});
 	}
