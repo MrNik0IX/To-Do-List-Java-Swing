@@ -1,6 +1,6 @@
 package todo;
 import java.awt.FlowLayout;
-import java.sql.Date;
+import java.util.Date;
 import java.time.LocalDate;
 
 import javax.swing.JLabel;
@@ -9,33 +9,35 @@ import javax.swing.JPanel;
 public class Task {
 
 	//Taskattributes 
-	private static int taskId;
+	private static int taskIdGen;
+	private int taskId;
 	private String taskTitle;
 	private String taskDescription;
-	private LocalDate taskDueDate;
+	private Date taskDueDate;
 	private byte taskPriority;
 	private short taskProgress = 0;
 	private boolean isDone = false;
 	
 	//Constructor
-	public Task(String taskTitle, String taskDescription, LocalDate taskDueDate, byte taskPriority) {
+	public Task(String taskTitle, String taskDescription, java.util.Date taskDueDate, byte taskPriority) {
 
 		this.taskTitle = taskTitle;
 		this.taskDescription = taskDescription;
 		this.taskDueDate = taskDueDate;
 		this.taskPriority = taskPriority;
+		taskId=++taskIdGen;
 	}
 	
 	
 	
+public int getTaskAmount() {
+	return taskIdGen;
+}
+
+
 	//Getter and Setter
-	public static int getTaskId() {
+	public int getTaskId() {
 		return taskId;
-	}
-
-
-	public static void setTaskId(int taskId) {
-		Task.taskId = taskId;
 	}
 
 
@@ -59,12 +61,12 @@ public class Task {
 	}
 
 
-	public LocalDate getTaskDueDate() {
+	public Date getTaskDueDate() {
 		return taskDueDate;
 	}
 
 
-	public void setTaskDueDate(LocalDate taskDueDate) {
+	public void setTaskDueDate(Date taskDueDate) {
 		this.taskDueDate = taskDueDate;
 	}
 

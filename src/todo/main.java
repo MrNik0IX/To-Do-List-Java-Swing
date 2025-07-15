@@ -36,7 +36,7 @@ public class main {
 	public static void main(String[] args) {
 
 SwingUtilities.invokeLater(()-> main.createAndShowGui());
-Task task = new Task("Test", "My test task", LocalDate.of(2000, 12, 17), (byte) 4);
+
 
 
 
@@ -137,7 +137,7 @@ Task task = new Task("Test", "My test task", LocalDate.of(2000, 12, 17), (byte) 
 		JPanel priorityFieldPanel = new JPanel();
 		dialogPanel.add(priorityFieldPanel);
 		JLabel getPriorityText = new JLabel("Priority: ");
-		JSpinner getPriorityField = new JSpinner(new SpinnerListModel(new Integer[]{1, 2, 3}));
+		JSpinner getPriorityField = new JSpinner(new SpinnerListModel(new Byte[]{1, 2, 3}));
 		priorityFieldPanel.add(getPriorityText);
 		priorityFieldPanel.add(getPriorityField);
 		
@@ -235,10 +235,31 @@ Task task = new Task("Test", "My test task", LocalDate.of(2000, 12, 17), (byte) 
 			}
 			
 			
+
+			
+		
+			
+			//formatting the description field (needs rework)
+			StringBuilder taskDescription = new StringBuilder(getDescField.getText());
+			taskDescription.insert(0, "<html>");
+			
+			int count=0;
+			for(int i=0; i<taskDescription.length(); i++) {
+	
+				count++;
+				if(count==21) {
+			
+					taskDescription.insert(i, "<br>");
+					count=0;
+					
+				}
+				
+			}
+			taskDescription.insert(taskDescription.length(), "</html>");
 			
 			
 			//Get entered data and create Task
-			mainPanel.add(new Task("f", "fff", LocalDate.now(), (byte)3).displayTask());
+			mainPanel.add(new Task(getTitleField.getText(), taskDescription.toString(), getDateField.getDate(),((byte) getPriorityField.getValue())).displayTask());
 			warningPanel.setVisible(false);
 			createDialog.setVisible(false);
 			window.revalidate();
