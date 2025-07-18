@@ -1,10 +1,17 @@
 package todo;
 import java.awt.FlowLayout;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.time.LocalDate;
 
+import javax.swing.Action;
+import javax.swing.JButton;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JWindow;
+import javax.swing.SwingUtilities;
 
 public class Task {
 
@@ -17,6 +24,7 @@ public class Task {
 	private byte taskPriority;
 	private short taskProgress = 0;
 	private boolean isDone = false;
+	private static HashMap<Integer, Task> allTasks = new HashMap<Integer, Task>();
 	
 	//Constructor
 	public Task(String taskTitle, String taskDescription, java.util.Date taskDueDate, byte taskPriority) {
@@ -26,6 +34,7 @@ public class Task {
 		this.taskDueDate = taskDueDate;
 		this.taskPriority = taskPriority;
 		taskId=++taskIdGen;
+		allTasks.put(this.taskId, this);
 	}
 	
 	
@@ -38,9 +47,12 @@ public int getTaskAmount() {
 	//Getter and Setter
 	public int getTaskId() {
 		return taskId;
+		
 	}
 
-
+	public static HashMap<Integer, Task> getAllTasks() {
+		return allTasks;
+	}
 	public String getTaskTitle() {
 		return taskTitle;
 	}
@@ -48,6 +60,7 @@ public int getTaskAmount() {
 
 	public void setTaskTitle(String taskTitle) {
 		this.taskTitle = taskTitle;
+		
 	}
 
 
@@ -99,15 +112,50 @@ public int getTaskAmount() {
 	public void setDone(boolean isDone) {
 		this.isDone = isDone;
 	}
-	
-	public JPanel displayTask() {
+	public JPanel readTask() {
 		JPanel taskDisplayPanel = new JPanel(new FlowLayout());
 		taskDisplayPanel.add(new JLabel(Integer.toString(taskId)));
 		taskDisplayPanel.add(new JLabel(taskTitle));
 		taskDisplayPanel.add(new JLabel(taskDescription));
 		taskDisplayPanel.add(new JLabel(taskDueDate.toString()));
 		taskDisplayPanel.add(new JLabel(Integer.toString(taskPriority)));
+		JButton button = new JButton();
+
+		
+		
+		button.addActionListener(e->{
+			deleteTask();
+			JFrame appWindow = (JFrame) SwingUtilities.windowForComponent(button);
+			System.out.println(button.getParent().getParent().getParent());
+			JPanel taskPanel = (JPanel) button.getParent().getParent().getParent();
+			
+			taskPanel.removeAll();
+			taskPanel.add(readTasks());
+			appWindow.revalidate();
+			});
+		taskDisplayPanel.add(button);
 		return taskDisplayPanel;
+	}
+	
+	public static JPanel readTasks() {
+		JPanel taskDisplayPanel = new JPanel(new FlowLayout());
+		for (int taskId : allTasks.keySet()) {
+			taskDisplayPanel.add(allTasks.get(taskId).readTask());
+			}
+		return taskDisplayPanel;
+		}
+	
+	
+	
+	public static void printAllTasks() {
+		for (int taskId : allTasks.keySet()) {
+			System.out.println(allTasks.get(taskId));
+		}
+	}
+	
+	public void deleteTask() {
+		allTasks.remove(taskId);
+		
 	}
 	
 }

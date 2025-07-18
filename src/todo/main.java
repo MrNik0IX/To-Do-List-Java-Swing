@@ -177,13 +177,16 @@ SwingUtilities.invokeLater(()-> main.createAndShowGui());
 		
 		//Panels
 		JPanel mainPanel = new JPanel();
+		JPanel taskPanel = new JPanel();
+		JPanel head = new JPanel();
 		mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.Y_AXIS));
+		taskPanel.setLayout(new BoxLayout(taskPanel, BoxLayout.Y_AXIS));
 		
 		//Top Panel with title and create button
-		JPanel head = new JPanel();
+		
 		mainPanel.add(head);
 		head.setLayout(new BoxLayout(head, BoxLayout.PAGE_AXIS));
-	
+		mainPanel.add(taskPanel);
 		window.add(mainPanel);
 		
 		//-----------------------------------------------------------------------------------------//
@@ -259,7 +262,11 @@ SwingUtilities.invokeLater(()-> main.createAndShowGui());
 			
 			
 			//Get entered data and create Task
-			mainPanel.add(new Task(getTitleField.getText(), taskDescription.toString(), getDateField.getDate(),((byte) getPriorityField.getValue())).displayTask());
+			new Task(getTitleField.getText(), taskDescription.toString(), getDateField.getDate(),((byte) getPriorityField.getValue()));
+			//can be replaced with a stream
+			taskPanel.removeAll();
+			taskPanel.add(Task.readTasks());
+			Task.printAllTasks();
 			warningPanel.setVisible(false);
 			createDialog.setVisible(false);
 			window.revalidate();
